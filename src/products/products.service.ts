@@ -25,4 +25,20 @@ constructor(private readonly prisma: PrismaService) {}
             where: { active: active },
         });
     }
+
+
+    // find where item is hreater than a given value
+    getByItemGreaterThan(value: number) {
+        return this.prisma.products.findMany({
+            where: { base_price: { gt: value } },
+            orderBy: { base_price: 'desc' },
+        },
+        );
+    }
+
+    addNew(productData: any) {
+        return this.prisma.products.create({
+            data: productData,
+        });
+    }
 }

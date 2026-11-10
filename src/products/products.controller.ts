@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseBoolPipe, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseBoolPipe, Post, Query } from '@nestjs/common';
 import { ProductsService } from './products.service.js';
 
 @Controller('products')
@@ -25,7 +25,18 @@ export class ProductsController {
         return this.productsService.getById(BigInt(id));
     }
 
-    // find where active =true
+    // find where base brise > a given value
+    // GET /products/search/base_price?price=100
+    @Get('search/base_price')
+    getByItemGreaterThan(@Query('price') value: number) {
+        return this.productsService.getByItemGreaterThan(value);
+    }
+
+    // add new product
+    @Post()
+    addNew(@Body() productData: any) {
+        return this.productsService.addNew(productData);
+    }
 
 }
 
