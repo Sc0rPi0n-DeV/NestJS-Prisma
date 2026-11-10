@@ -41,4 +41,11 @@ constructor(private readonly prisma: PrismaService) {}
             data: productData,
         });
     }
+
+    updateById(id: bigint, updateData: any) {
+        return this.prisma.products.update({
+            where: { product_id: id },
+            data: updateData,
+        });
+    }
 }

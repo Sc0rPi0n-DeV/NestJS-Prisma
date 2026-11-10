@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseBoolPipe, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseBoolPipe, Patch, Post, Query } from '@nestjs/common';
 import { ProductsService } from './products.service.js';
 
 @Controller('products')
@@ -36,6 +36,13 @@ export class ProductsController {
     @Post()
     addNew(@Body() productData: any) {
         return this.productsService.addNew(productData);
+    }
+
+    // update product by id patch update 
+    // PATCH /products/:id
+    @Patch(':id')
+    updateById(@Param('id') id: string, @Body() updateData: any) {
+        return this.productsService.updateById(BigInt(id), updateData);
     }
 
 }
