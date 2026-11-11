@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Param, ParseBoolPipe, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, ParseBoolPipe, Patch, Post, Query } from '@nestjs/common';
 import { ProductsService } from './products.service.js';
+import { CreateProductDto } from './dtos/create-product.dto.js';
 
 @Controller('products')
 export class ProductsController {
@@ -20,10 +21,15 @@ export class ProductsController {
     return this.productsService.getByActive(active);
   }
     // get by id
-    @Get(':id')
-    getById(@Param('id') id: string) {
-        return this.productsService.getById(BigInt(id));
+  @Get(':id')
+async getById(@Param('id') id: string) {
+    try {
+        return await this.productsService.getById(BigInt(id));
     }
+    catch (error) {
+        throw new NotFoundException(`Product with id ${id} not found`);
+    }
+}
 
     // find where base brise > a given value
     // GET /products/search/base_price?price=100
@@ -34,7 +40,7 @@ export class ProductsController {
 
     // add new product
     @Post()
-    addNew(@Body() productData: any) {
+    addNew(@Body() productData: CreateProductDto) {
         return this.productsService.addNew(productData);
     }
 
